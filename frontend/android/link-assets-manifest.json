@@ -1,0 +1,33 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/JosefinSans-Bold.ttf",
+      "sha1": "d94bebbdb9af646a3f8b206e89e53a31535d88c6"
+    },
+    {
+      "path": "src/assets/fonts/JosefinSans-Italic.ttf",
+      "sha1": "2cf37395b839f659e17c34556663410184500f80"
+    },
+    {
+      "path": "src/assets/fonts/JosefinSans-Light.ttf",
+      "sha1": "3478ff152263a83db21544f670939ef217c9dd65"
+    },
+    {
+      "path": "src/assets/fonts/JosefinSans-Medium.ttf",
+      "sha1": "a8b8f3878775c64b332c11bc9a66759eeb0537a0"
+    },
+    {
+      "path": "src/assets/fonts/JosefinSans-Regular.ttf",
+      "sha1": "675a4c882e3946047c042c83c66fa803e5aa6554"
+    },
+    {
+      "path": "src/assets/fonts/JosefinSans-SemiBold.ttf",
+      "sha1": "e52027fd05145d1a41447690f745666c83f91e9e"
+    },
+    {
+      "path": "src/assets/fonts/Pacifico-Regular.ttf",
+      "sha1": "baca1fca7fe74b61cb33aa0da48ec1a3a77bcf49"
+    }
+  ]
+}
