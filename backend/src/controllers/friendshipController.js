@@ -27,6 +27,7 @@ exports.getUserRelations = async (req, res) => {
             .lean();
         const all = [...userFr, ...manualFr];
 
+        console.log('deneme');
         const friends = manualFr
             .filter(f => f.relationType === 'friend')
             .map(f => ({
