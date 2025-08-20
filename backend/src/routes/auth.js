@@ -3,7 +3,7 @@ const { listUsers, registerUser, loginUser, deleteUser } = require('../controlle
 const router = express.Router();
 
 router.get('/users', listUsers)
-router.post('/registerUser', registerUser);
+router.post('/register', registerUser);
 router.post('/loginUser', loginUser);
 router.delete('/deleteUser/:id', deleteUser);
 module.exports = router;

@@ -1,91 +1,93 @@
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-  Dimensions,
+    View,
+    Text,
+    StyleSheet,
+    TextInput,
+    TouchableOpacity,
+    Alert,
+    Dimensions,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 export default function Login() {
-  const navigation = useNavigation();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+    const navigation = useNavigation();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
-  const handleLogin = async () => {
-    if (!email.trim() || !password.trim()) {
-      Alert.alert('Uyarı', 'Lütfen e-posta ve şifrenizi girin.');
-      return;
-    }
+    const handleLogin = async () => {
+        if (!email.trim() || !password.trim()) {
+            Alert.alert('Uyarı', 'Lütfen e-posta ve şifrenizi girin.');
+            return;
+        }
 
-    setLoading(true);
-    try {
-      await axios.post('http://10.0.2.2:3000/api/loginUser', {
-        email,
-        password,
-      });
-      Alert.alert('Başarılı', 'Giriş başarılı!');
-      navigation.navigate('Home');
-    } catch (err) {
-      Alert.alert(
-        'Hata',
-        err.response?.data?.message || 'Bir sorun oluştu.'
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+        setLoading(true);
+        try {
+            const response = await axios.post(
+                'http://10.0.2.2:4000/api/auth/loginUser',
+                { email, password }
+            );
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>mevuu</Text>
+            const { user } = response.data;
+            if (!user?.id) throw new Error('user.id yok');
 
-      <View style={styles.card}>
-        <Text style={styles.headline}>Giriş Yap</Text>
+            await AsyncStorage.setItem('userId', user.id);
+            console.log('KAYDEDİLEN userId:', user.id);
 
-        <Text style={styles.label}>E-posta</Text>
-        <TextInput
-          style={styles.input}
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
+            navigation.navigate('Home');
+        } catch (err) {
+            console.log('Login error:', err);
+            Alert.alert('Hata', err.response?.data?.message || err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-        <Text style={styles.label}>Parola</Text>
-        <TextInput
-          style={styles.input}
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-          autoCapitalize="none"
-        />
+    return (
+        <View style={styles.container}>
+            <Text style={styles.title}>mevuu</Text>
 
-        <TouchableOpacity
-          style={[styles.button, loading && styles.disabled]}
-          onPress={handleLogin}
-          disabled={loading}
-          activeOpacity={0.85}>
-          <Text style={styles.buttonText}>
-            {loading ? 'Giriş yapılıyor…' : 'Giriş Yap'}
-          </Text>
-        </TouchableOpacity>
+            <View style={styles.card}>
+                <Text style={styles.headline}>Giriş Yap</Text>
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Register')}
-          style={styles.secondaryButton}>
-          <Text style={styles.secondaryText}>Hesap Oluştur</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+                <TextInput
+                    style={styles.input}
+                    placeholder="E-posta"
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                />
+
+                <TextInput
+                    style={styles.input}
+                    placeholder="Parola"
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry
+                    autoCapitalize="none"
+                />
+
+                <TouchableOpacity
+                    style={[styles.button, loading && styles.disabled]}
+                    onPress={handleLogin}
+                    disabled={loading}>
+                    <Text style={styles.buttonText}>
+                        {loading ? 'Giriş yapılıyor…' : 'Giriş Yap'}
+                    </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+                    <Text style={styles.secondaryText}>Hesap Oluştur</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
 }
 
 /* -------------------------------- STYLES -------------------------------- */

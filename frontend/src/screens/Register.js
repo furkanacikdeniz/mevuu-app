@@ -211,7 +211,7 @@ export default function Register() {
         }
         setLoading(true);
         try {
-            await axios.post('http://10.0.2.2:3000/api/registerUser', form);
+            await axios.post('http://10.0.2.2:3000/users', form);
             Alert.alert('Başarılı', 'Hesabınız oluşturuldu!');
             navigation.navigate('Home');
         } catch (err) {
